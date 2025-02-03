@@ -1,8 +1,0 @@
-flask
-face-recognition
-opencv-python
-numpy
-
-Flask
-flask-cors
-requests
