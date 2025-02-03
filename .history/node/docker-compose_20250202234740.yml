@@ -1,0 +1,45 @@
+services:
+  app:
+    build:
+      context: .
+    container_name: auth-app
+    working_dir: /usr/src/app
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/usr/src/app
+    environment:
+      JWT_SECRET: 'Astify16006'
+      JWT_EXPIRE: 10000
+      FLASK_API: 'http://flask:5000' # Fixed missing closing quote
+      MONGO: 'mongodb://mongo:27017/auth'
+    depends_on:
+      - mongo
+      - flask
+    command: ['npm', 'run', 'dev']
+
+  flask:
+    build:
+      context: ./python
+    container_name: flask-api
+    working_dir: /usr/src/app
+    ports:
+      - '5000:5000'
+    environment:
+      - PYTHONUNBUFFERED=1
+    devices:
+      - '/dev/video0:/dev/video0'
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo-db
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
+    driver: local

@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  flask-app:
+    build: .
+    ports:
+      - "5002:5002"
+    devices:
+      - "/dev/video0:/dev/video0"  # Разрешаем доступ к камере хоста
+    environment:
+      - FLASK_ENV=production  # Опционально, устанавливаем среду Flask в продакшн
+    restart: always
+    privileged: true  # Даем дополнительные привилегии контейнеру для работы с устройствами

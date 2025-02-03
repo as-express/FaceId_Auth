@@ -1,0 +1,29 @@
+services:
+  app:
+    build:
+      context: .
+    container_name: nestjs-app
+    working_dir: /usr/src/app
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/usr/src/app
+    environment:
+      JWT_SECRET: 'Astify16006'
+      JWT_EXPIRE: 10000
+      MONGO: 'mongodb://mongo:27017/chat'
+    depends_on:
+      - mongo
+    command: ['bun', 'run', 'start:dev']
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo-db
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
+    driver: local
